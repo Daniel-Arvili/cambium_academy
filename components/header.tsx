@@ -7,6 +7,9 @@ import { Menu, X, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
+import Image from 'next/image'
+
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -22,16 +25,13 @@ export default function Header() {
 
   return (
     <header className="border-b bg-background sticky top-0 z-40">
-      <div className="container mx-auto max-w-6xl px-4">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2 mx-4">
             <Link href="/" className="flex items-center">
-              <span className="text-xl font-bold text-gray-900 dark:text-white">Cambium Academy</span>
+              <Image src="/brainTree.png" alt="Cambium Academy" width={128} height={128} />
             </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+            {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -45,7 +45,7 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-
+          </div>
           <div className="flex items-center gap-2">
             {/* Theme Toggle */}
             <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
@@ -81,7 +81,6 @@ export default function Header() {
             </nav>
           </div>
         )}
-      </div>
     </header>
   )
 }
