@@ -1,14 +1,16 @@
 import { Suspense } from "react"
-import { fetchCategories } from "@/lib/data"
+import { Category } from "@/lib/data"
 import CategoryGrid from "@/components/category-grid"
+import { getCategories } from "@/services/google_sheet";
 
 export const metadata = {
   title: "Categories - Cambium Academy",
   description: "Browse all educational content categories",
 }
+const categories: Category[] = await getCategories();
+
 
 export default async function CategoriesPage() {
-  const categories = await fetchCategories()
 
   return (
     <main className="container mx-auto max-w-6xl px-4 py-8">
