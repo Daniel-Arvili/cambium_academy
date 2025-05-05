@@ -32,7 +32,7 @@ export default async function RootLayout({
       <head />
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
-          <div className="flex min-h-screen flex-col bg-[#FFEBD8] dark:bg-[#0a0043]">
+          <div className="flex min-h-screen flex-col bg-[#FFEBD8] dark:bg-[#0a0043] text-[#0a0043] dark:text-[#FFEBD8]">
             <Navbar categories={categories} />
             <div className="flex-1">{children}</div>
             <Footer />

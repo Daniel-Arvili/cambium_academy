@@ -121,7 +121,7 @@ export async function fetchVideosByCategory(categorySlug: string): Promise<RowDa
 }
 export async function fetchVideoById(id: string): Promise<RowData | undefined> {
   const rows = await getRows();
-  return rows.find(r => r.id === id);
+  return rows.find(r => r.video_id === id);
 }
 export async function fetchRelatedVideos(
   categorySlug: string,
@@ -129,6 +129,6 @@ export async function fetchRelatedVideos(
 ): Promise<RowData[]> {
   const rows = await getRows();
   return rows.filter(
-    (r) => slugify(r.category.trim()) === categorySlug && r.id !== currentId
+    (r) => slugify(r.category.trim()) === categorySlug && r.video_id !== currentId
   );
 }

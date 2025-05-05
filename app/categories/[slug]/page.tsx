@@ -19,11 +19,10 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   }
 
   const videos = await fetchVideosByCategory(category.slug);
-
   return (
     <main className="container mx-auto max-w-6xl px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-center">{category.name}</h1>
+        <h1 className="text-3xl font-bold text-center text-">{category.name}</h1>
       </header>
 
       <VideoGrid videos={videos} />

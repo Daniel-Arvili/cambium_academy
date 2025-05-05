@@ -46,7 +46,7 @@ export default  function MainPage({
           </svg>
         </div>
         <div className="mx-auto flex flex-col justify-center items-center max-w-6xl relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[#ffebd8] dark:text-[#000000]">Cambium Academy</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[#ffebd8]">Cambium Academy</h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl text-[#ffebd8]">
             Your knowledge hub for educational content. Discover, search, and learn from our curated video library.
           </p>
@@ -54,7 +54,7 @@ export default  function MainPage({
             <Input
               name="q"
               placeholder="Search for educational content..."
-              className="bg-[#ffebd8] text-[#0a0043] placeholder:text-[#ff6900] border-orange-600/30 focus-visible:ring-[#ff6900]"
+              className="bg-[#ffebd8] dark:bg-[#0a0043] text-[#0a0043] dark:text-[#ffebd8] placeholder:text-[#0a0043] dark:placeholder:text-[#ffebd8] dark:border-[#0ffebd8] focus-visible:ring-[#ffebd8] dark:focus-visible:ring-[#ffebd8]"
               defaultValue={searchQuery}
             />
             <Button type="submit" variant="secondary" size="icon">
@@ -74,7 +74,7 @@ export default  function MainPage({
           <>
             <section className="mb-12">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Browse by Category</h2>
+                <h2 className="text-2xl font-bold text-[#0a0043] dark:text-[#FFEBD8]">Browse by Category</h2>
                 <Link
                   href="/categories"
                   className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300"

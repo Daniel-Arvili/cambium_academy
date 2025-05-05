@@ -21,15 +21,7 @@ export default async function Home({
     .slice(0, 6)
     .map(({ _parsedDate, ...rest }) => rest); 
 
-  const idCountMap: Record<string, number> = {};
-  const featuredVideos = latestSixRaw.map(video => {
-    const seen = (idCountMap[video.id] ||= 0) + 1;
-    idCountMap[video.id] = seen;
-    return {
-      ...video,
-      id: seen > 1 ? `${video.id}-${seen}` : video.id,
-    };
-  });
+  const featuredVideos = latestSixRaw;
 
   return (
     <MainPage
