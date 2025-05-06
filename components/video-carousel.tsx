@@ -23,7 +23,7 @@ export function VideoCarousel({ videos }: VideoCarouselProps) {
   useEffect(() => {
     const timer = setInterval(() => {
       nextRef.current?.click();
-    }, 4000);
+    }, 2500);
     return () => clearInterval(timer);
   }, []);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Animation from "./Gif/Animation.gif";
+import Animation from "@/app/Gif/Animation.gif";
 export default function Loading() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">

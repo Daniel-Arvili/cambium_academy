@@ -36,7 +36,7 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
           <div>
             <h1 className="text-3xl font-extrabold mb-2">{video.title}</h1>
 
-            <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
+            <div className="flex flex-wrap gap-4 text-sm text-[#0a0043] dark:text-[#ffebd8] mb-4">
               <div className="flex items-center space-x-1">
                 <Calendar className="h-4 w-4" />
                 <span>{formatDate(video.date)}</span>

@@ -39,7 +39,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                   Categories
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent sideOffset={4} align="start" className="min-w-[200px]">
+              <DropdownMenuContent sideOffset={4} align="start" className="min-w-[200px] dark:bg-[#0a0043]">
                 {categories.map((category) => (
                   <DropdownMenuItem key={category.id} className="p-0">
                     <Link
@@ -47,7 +47,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                       className={cn(
                         "block w-full px-4 py-2 text-sm",
                         pathname === `/categories/${category.slug}`
-                          ? "bg-teal-100 dark:bg-teal-900"
+                          ? "bg-[#ff6900]/80"
                           : "",
                         "text-foreground"
                       )}
