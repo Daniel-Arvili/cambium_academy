@@ -1,29 +1,27 @@
 "use client"
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CategoryGrid from "@/components/category-grid";
-//import SearchResults from "@/components/search-results";
 import { Category } from "@/lib/data";
 import { RowData } from "@/lib/data";
 import { VideoCarousel } from "@/components/video-carousel";
 
 type MainPageProps = {
-  searchParams: { q?: string };
   data: RowData[];
   categories: Category[];
   featuredVideos: RowData[];
 };
 
 export default function MainPage({
-  searchParams,
   data,
   categories,
   featuredVideos,
 }: MainPageProps) {
-  const searchQuery = searchParams.q || "";
+const [searchQuery,setSearchQuery]=useState<string>("");
+
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -123,9 +121,10 @@ export default function MainPage({
               name="q"
               placeholder="Search for educational content..."
               className="bg-[#ffebd8] dark:bg-[#0a0043] text-[#0a0043] dark:text-[#ffebd8] placeholder:text-[#0a0043] dark:placeholder:text-[#ffebd8] focus-visible:ring-[#ffebd8] dark:focus-visible:ring-[#0A0043]"
-              defaultValue={searchQuery}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Button type="submit" variant="secondary" size="icon">
+            <Button className="bg-[#ffebd8] dark:bg-[#0a0043] text-[#0a0043] dark:text-[#ffebd8]" type="submit" variant="secondary" size="icon">
               <Search className="h-4 w-4" />
               <span className="sr-only">Search</span>
             </Button>
@@ -134,12 +133,6 @@ export default function MainPage({
       </section>
 
       <div className="container mx-auto max-w-6xl px-4 py-8">
-        {searchQuery ? (
-          <Suspense fallback={<div>Searching...</div>}>
-            {/* <SearchResults query={searchQuery} /> */}
-          </Suspense>
-        ) : (
-          <>
             <section className="mb-12">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-[#0a0043] dark:text-[#FFEBD8]">
@@ -160,8 +153,6 @@ export default function MainPage({
               </div>
               <VideoCarousel videos={featuredVideos} />
             </section>
-          </>
-        )}
       </div>
     </main>
   );

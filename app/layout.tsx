@@ -14,7 +14,6 @@ export const metadata: Metadata = {
   description: "A knowledge hub for educational content organized by categories",
 }
 
-// Fetch categories on the server using top-level await (supported in Next.js app directory)
 const categories = await getCategories()
 
 export default async function RootLayout({
@@ -28,7 +27,6 @@ export default async function RootLayout({
       className="light"
       style={{ colorScheme: "light" }}
     >
-      {/* head slot required for next-themes script injection */}
       <head />
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
