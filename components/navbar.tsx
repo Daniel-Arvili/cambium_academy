@@ -26,30 +26,34 @@ export default function Navbar({ categories }: { categories: Category[] }) {
 
   return (
     <header className="border-b bg-[#FFEBD8] dark:bg-[#0a0043] sticky top-0 z-40">
-      <div className="flex h-16 items-center justify-between">
-        <div className="flex items-center gap-4 mx-4">
+      <div className="flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center">
             <Image src="/cambiumlogo.png" alt="Cambium Academy" width={128} height={128} />
           </Link>
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4">
+          <nav className="hidden md:flex items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="px-2 text-[#0a0043] dark:text-[#FFEBD8]">
                   Categories
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent sideOffset={4} align="start" className="min-w-[200px] dark:bg-[#0a0043]">
-                {categories.map((category) => (
+              <DropdownMenuContent
+                sideOffset={4}
+                align="start"
+                className="dark:bg-[#0a0043] grid grid-cols-3 gap-2 p-2"
+              >
+                {categories.map(category => (
                   <DropdownMenuItem key={category.id} className="p-0">
                     <Link
                       href={`/categories/${category.slug}`}
                       className={cn(
-                        "block w-full px-4 py-2 text-sm",
+                        "block w-full px-3 py-2 text-sm rounded",
                         pathname === `/categories/${category.slug}`
                           ? "bg-[#ff6900]/80"
-                          : "",
-                        "text-foreground"
+                          : "hover:bg-[#FFEBD8]/30 dark:hover:bg-[#0a0043]/50",
+                        "text-[#0a0043] dark:text-[#FFEBD8]"
                       )}
                     >
                       {category.name}
@@ -85,7 +89,6 @@ export default function Navbar({ categories }: { categories: Category[] }) {
         <div className="md:hidden border-t py-4">
           <nav className="flex flex-col space-y-4 px-4">
             <Link
-              key="categories"
               href="/categories"
               className={cn(
                 "text-sm font-medium transition-colors hover:text-teal-600",

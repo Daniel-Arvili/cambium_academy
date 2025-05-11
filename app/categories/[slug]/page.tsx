@@ -16,10 +16,8 @@ export default async function CategoryPage({
   const category = await fetchCategoryBySlug(params.slug);
   if (!category) notFound();
 
-  // fetch _all_ the videos in this category
   const allVideos = await fetchVideosByCategory(category.slug);
 
-  // figure out current page (default to 1), pageSize, and slice
   const pageSize = 6;
   const currentPage = parseInt(searchParams.page || '1', 10);
   const start = (currentPage - 1) * pageSize;

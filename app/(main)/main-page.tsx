@@ -1,7 +1,7 @@
 "use client"
-import { Suspense, useState } from "react";
-import Link from "next/link";
-import { Search } from "lucide-react";
+import { Suspense, useState, useMemo } from "react";
+import Link from 'next/link'
+import { Search, Link as LinkIcon} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CategoryGrid from "@/components/category-grid";
@@ -15,20 +15,35 @@ type MainPageProps = {
   featuredVideos: RowData[];
 };
 
-export default function MainPage({
-  data,
-  categories,
-  featuredVideos,
-}: MainPageProps) {
-const [searchQuery,setSearchQuery]=useState<string>("");
+export default function MainPage({ data, categories, featuredVideos }: MainPageProps) {
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
+  const suggestions = useMemo(() => {
+    if (!searchQuery) return [];
+    const lowerQuery = searchQuery.toLowerCase();
+    const wordsSet = new Set<string>();
+
+    data.forEach(video => {
+      video.title.split(/\W+/).forEach(word => {
+        if (word) wordsSet.add(word);
+      });
+      if (video.category) wordsSet.add(video.category);
+      video.hashtags.split(/\s*,\s*/).forEach(tag => {
+        if (tag) wordsSet.add(tag);
+      });
+    });
+
+    return Array.from(wordsSet)
+      .filter(word => word.toLowerCase().startsWith(lowerQuery))
+      .slice(0, 4);
+  }, [searchQuery, data]);
 
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero Section */}
       <section className="relative bg-white/10 backdrop-blur-lg border-b border-white/20 py-16 px-4 w-full h-fit">
         <div className="absolute inset-0 z-0">
-          <svg
+        <svg
             xmlns="http://www.w3.org/2000/svg"
             width="100%"
             height="100%"
@@ -113,46 +128,64 @@ const [searchQuery,setSearchQuery]=useState<string>("");
             Cambium Academy
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl text-[#FFEBD8] dark:text-[#0A0043]">
-            Your knowledge hub for educational content. Discover, search, and
-            learn from our curated video library.
+            Your knowledge hub for educational content. Discover, search, and learn from our curated video library.
           </p>
-          <form action="/search" className="flex w-full max-w-3xl gap-2">
-            <Input
-              name="q"
-              placeholder="Search for educational content..."
-              className="bg-[#ffebd8] dark:bg-[#0a0043] text-[#0a0043] dark:text-[#ffebd8] placeholder:text-[#0a0043] dark:placeholder:text-[#ffebd8] focus-visible:ring-[#ffebd8] dark:focus-visible:ring-[#0A0043]"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Button className="bg-[#ffebd8] dark:bg-[#0a0043] text-[#0a0043] dark:text-[#ffebd8]" type="submit" variant="secondary" size="icon">
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Search</span>
-            </Button>
+
+          <form action="/search" className="w-full max-w-3xl">
+            <div className="relative">
+              <div className="flex w-full gap-2">
+                <Input
+                  name="q"
+                  placeholder="Search"
+                  className="bg-[#FFEBD8] dark:bg-[#0A0043] dark:placeholder-[#FFEBD8]  dark:focus:ring-[#0A0043]"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                />
+                <Button type="submit" variant="secondary" size="icon" className="bg-[#FFEBD8] dark:bg-[#0A0043] text-[#0A0043] dark:text-[#FFEBD8]">
+                  <Search className="h-5 w-5 text-[#0A0043] dark:text-[#FFEBD8]" />
+                </Button>
+              </div>
+
+              {suggestions.length > 0 && (
+                <div className="absolute top-full left-0 mt-1 w-4/5 bg-[#FFEBD8] dark:bg-[#0A0043] border border-[#FFEBD8] rounded-lg shadow-lg z-10">
+                  <div className="flex items-center justify-between px-3 py-1">
+                    <span className="text-sm font-medium text-[#0A0043] dark:text-[#FFEBD8]">Suggestions</span>
+                    <LinkIcon className="h-4 w-4 text-[#0A0043] dark:text-[#FFEBD8]" />
+                  </div>
+                  <div className="flex flex-wrap gap-2 p-2">
+                    {suggestions.map(s => (
+                      <Link
+                        key={s}
+                        href={`/search?q=${encodeURIComponent(s)}`}
+                        className="px-3 py-1 bg-white dark:bg-gray-800 text-[#0A0043] dark:text-[#FFEBD8] rounded-full text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {s}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </form>
         </div>
       </section>
 
       <div className="container mx-auto max-w-6xl px-4 py-8">
-            <section className="mb-12">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-[#0a0043] dark:text-[#FFEBD8]">
-                  Browse by Category
-                </h2>
-                <Link
-                  href="/categories"
-                  className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300"
-                >
+        <section className="mb-12">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-[#0A0043] dark:text-[#FFEBD8]">Browse by Category</h2>
+            <Link href="/categories" className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300">
                   View all
-                </Link>
-              </div>
-              <CategoryGrid categories={categories} />
-            </section>
-            <section className="mb-12">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Newest Videos</h2>
-              </div>
-              <VideoCarousel videos={featuredVideos} />
-            </section>
+            </Link>
+          </div>
+          <CategoryGrid categories={categories} />
+        </section>
+        <section className="mb-12">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-[#0A0043] dark:text-[#FFEBD8]">Newest Videos</h2>
+          </div>
+          <VideoCarousel videos={featuredVideos} />
+        </section>
       </div>
     </main>
   );

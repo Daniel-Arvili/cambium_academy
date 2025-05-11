@@ -1,5 +1,8 @@
-import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   BookOpen,
   Code,
@@ -13,14 +16,9 @@ import {
   MoreHorizontal,
   Aperture,
   Smartphone,
-} from "lucide-react"
-
-export type Category = {
-  id: string
-  name: string
-  slug: string
-  count: number
-}
+} from "lucide-react";
+import type { Category } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
 const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   "cambium-processes": Rocket,
@@ -32,44 +30,88 @@ const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   "management-and-customer-services": Users,
   "devops-&-aws": PenTool,
   "devops-aws": PenTool,
-  "react": Code,
+  react: Code,
   "node-js": Code,
-  "meetups": Users,
-  "ai": Cpu,
-  "qa": CheckCircle,
-  "other": MoreHorizontal,
+  meetups: Users,
+  ai: Cpu,
+  qa: CheckCircle,
+  other: MoreHorizontal,
   "dot-net": Code,
   ".net": Code,
-  "flutter": Aperture,
-  "angular": Aperture,
+  flutter: Aperture,
+  angular: Aperture,
+};
+
+interface CategoryGridProps {
+  categories: Category[];
 }
 
-export default function CategoryGrid({ categories }: { categories: Category[] }) {
+export default function CategoryGrid({ categories }: CategoryGridProps) {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const displayCategories = categories.slice(0, 16);
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {categories.map((category) => {
-        // Use the slug to pick an icon
-        const key = category.slug.toLowerCase()
-        const IconComponent = iconMap[key] || Lightbulb
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {displayCategories.map((category) => {
+        const IconComponent = iconMap[category.slug.toLowerCase()] || Lightbulb;
+        const isHovered = hoveredId === category.id;
 
         return (
-          <Link href={`/categories/${category.slug}`} key={category.id}>
-            <Card className="h-full transition-all hover:shadow-md border-[#0a0043]/20 dark:border-[#ffebd8]/20  dark:bg-muted/40">
-              <CardContent className="p-4 flex flex-col items-center text-center">
-                <div className="bg-[#0a0043]/10 dark:bg-[#ffebd8]/10 p-3 rounded-full mb-4">
-                  <IconComponent className="h-6 w-6 text-[#0a0043] dark:text-[#ffebd8]" />
+          <Link
+            key={category.id}
+            href={`/categories/${category.slug}`}
+            className="block h-full"
+          >
+            <motion.div
+              onMouseEnter={() => setHoveredId(category.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className={cn(
+                "h-full flex flex-col rounded-2xl overflow-hidden cursor-pointer",
+                "transition-transform"
+              )}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.03 }}
+              style={{
+                background: isHovered
+                  ? "linear-gradient(135deg, #FFEBD8 0%, #0A0043 100%)"
+                  : "linear-gradient(135deg, #0A0043 0%, #FFEBD8 100%)",
+              }}
+            >
+              <div className="p-6 flex flex-col items-center text-center flex-1">
+                <div
+                  className="p-4 rounded-full mb-4"
+                  style={{ background: isHovered ? "rgba(255,235,216,0.3)" : "rgba(10,0,67,0.3)" }}
+                >
+                  <IconComponent
+                    className={cn(
+                      "h-8 w-8",
+                      isHovered ? "text-[#0A0043]" : "text-[#FFEBD8]"
+                    )}
+                  />
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-[#0a0043] dark:text-[#ffebd8]">
+                <h3
+                  className={cn(
+                    "text-lg font-bold mb-2",
+                    isHovered ? "text-[#0A0043]" : "text-[#FFEBD8]"
+                  )}
+                >
                   {category.name}
                 </h3>
-                <span className="text-xs bg-[#0a0043]/10 dark:bg-[#ffebd8]/10 text-[#0a0043] dark:text-[#ffebd8] px-2 py-1 rounded-full">
-                  {category.count} videos
-                </span>
-              </CardContent>
-            </Card>
+                <p
+                  className={cn(
+                    "text-sm",
+                    isHovered ? "text-[#0A0043]/80" : "text-[#FFEBD8]/80"
+                  )}
+                >
+                  {category.count} {category.count === 1 ? "video" : "videos"}
+                </p>
+              </div>
+            </motion.div>
           </Link>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
