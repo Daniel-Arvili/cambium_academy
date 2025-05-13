@@ -28,8 +28,21 @@ export default function Navbar({ categories }: { categories: Category[] }) {
     <header className="border-b bg-[#FFEBD8] dark:bg-[#0a0043] sticky top-0 z-40">
       <div className="flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center">
-            <Image src="/cambiumlogo.png" alt="Cambium Academy" width={128} height={128} />
+        <Link href="/" className="flex items-center">
+            <Image
+              src="/cambiumlogo.png"
+              alt="Cambium Academy"
+              width={128}
+              height={128}
+              className="block dark:hidden"
+            />
+            <Image
+              src="/logo_orange.png"
+              alt="Cambium Academy"
+              width={128}
+              height={128}
+              className="hidden dark:block"
+            />
           </Link>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center">

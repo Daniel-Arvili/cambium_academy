@@ -27,19 +27,27 @@ export default function VideoGrid({ videos }: VideoGridProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {validVideos.map((video) => (
         <Link href={`/videos/${video.video_id}`} key={video.video_id}>
-          <Card className="flex flex-col h-full overflow-hidden border-2 border-[#0A0043] dark:border-[#FFEBD8] rounded-lg shadow hover:shadow-lg transition-transform transform hover:-translate-y-1 bg-white dark:bg-[#0A0043]">
+          <Card
+            className="p-0 flex flex-col h-full overflow-hidden 
+              border-2 border-[#0A0043] dark:border-[#FFEBD8] 
+              rounded-lg shadow hover:shadow-lg transition-transform transform hover:-translate-y-1
+              bg-white dark:bg-[#0A0043]"
+          >
             {video.image ? (
-              <div className="aspect-video relative overflow-hidden">
+              <div className="aspect-video relative overflow-hidden rounded-t-lg">
                 <Image
                   src={video.image}
                   alt={video.title}
                   fill
-                  className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                  className={
+                    "object-cover transition-transform duration-300 ease-in-out hover:scale-105 " +
+                    "rounded-t-lg"
+                  }
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             ) : (
-              <div className="aspect-video flex items-center justify-center bg-[#FFEBD8]/30 dark:bg-[#0A0043]/30">
+              <div className="aspect-video flex items-center justify-center bg-[#FFEBD8]/30 dark:bg-[#0A0043]/30 rounded-t-lg">
                 <span className="text-[#0A0043]/70 dark:text-[#FFEBD8]/70 text-sm">
                   No Image Available
                 </span>

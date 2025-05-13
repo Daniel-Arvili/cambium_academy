@@ -41,7 +41,7 @@ export default function MainPage({ data, categories, featuredVideos }: MainPageP
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero Section */}
-      <section className="relative bg-white/10 backdrop-blur-lg border-b border-white/20 py-16 px-4 w-full h-fit">
+      <section className="relative bg-white/10 backdrop-blur-lg border-b border-white/20 py-22 px-4 w-full h-fit">
         <div className="absolute inset-0 z-0">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +137,7 @@ export default function MainPage({ data, categories, featuredVideos }: MainPageP
                 <Input
                   name="q"
                   placeholder="Search"
-                  className="bg-[#FFEBD8] dark:bg-[#0A0043] dark:placeholder-[#FFEBD8]  dark:focus:ring-[#0A0043]"
+                  className="bg-[#FFEBD8] dark:bg-[#0A0043] focus-visible:ring-[#FFEBD8] dark:focus-visible:ring-[#0A0043]"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                 />
@@ -147,7 +147,7 @@ export default function MainPage({ data, categories, featuredVideos }: MainPageP
               </div>
 
               {suggestions.length > 0 && (
-                <div className="absolute top-full left-0 mt-1 w-4/5 bg-[#FFEBD8] dark:bg-[#0A0043] border border-[#FFEBD8] rounded-lg shadow-lg z-10">
+                <div className="absolute top-full left-0 mt-2 w-1/2 bg-[#FFEBD8] dark:bg-[#0A0043] rounded-lg shadow-lg z-10">
                   <div className="flex items-center justify-between px-3 py-1">
                     <span className="text-sm font-medium text-[#0A0043] dark:text-[#FFEBD8]">Suggestions</span>
                     <LinkIcon className="h-4 w-4 text-[#0A0043] dark:text-[#FFEBD8]" />
