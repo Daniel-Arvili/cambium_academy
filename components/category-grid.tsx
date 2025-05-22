@@ -48,7 +48,6 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {categories.map((category) => {
-        // Use the slug to pick an icon
         const key = category.slug.toLowerCase()
         const IconComponent = iconMap[key] || Lightbulb
         return (

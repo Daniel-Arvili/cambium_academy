@@ -1,5 +1,5 @@
 "use client"
-import { Suspense, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Link from 'next/link'
 import { Search, Link as LinkIcon} from "lucide-react";
 import { Button } from "@/components/ui/button";

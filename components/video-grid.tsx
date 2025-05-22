@@ -39,6 +39,7 @@ export default function VideoGrid({ videos }: VideoGridProps) {
                   src={video.image}
                   alt={video.title}
                   fill
+                  
                   className={
                     "object-cover transition-transform duration-300 ease-in-out hover:scale-105 " +
                     "rounded-t-lg"

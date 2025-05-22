@@ -21,7 +21,6 @@ export const rowToObject = (
     return rowObject as RowData;
   };
 
-  // get all rows and categories once and cache them
 let rows: RowData[] = [];
 let categories: string[] = [];
 export const getRows = async (): Promise<RowData[]> => {
@@ -31,7 +30,7 @@ export const getRows = async (): Promise<RowData[]> => {
         `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1?key=${API_KEY}`,
         {
           next: {
-            revalidate: 3600 // Revalidate every hour
+            revalidate: 3600 
           }
         }
       );
@@ -59,7 +58,6 @@ export const getRows = async (): Promise<RowData[]> => {
 
 let categoriesCache: Category[] = [];
 
-/** simple slugify: lowercase + replace non-alphanum with hyphens */
 export function slugify(str: string) {
   return str
     .toLowerCase()
@@ -73,14 +71,12 @@ export const getCategories = async (): Promise<Category[]> => {
     const rows = await getRows();
 
   
-    // 1️⃣ count how many times each category name appears
     const counts: Record<string, number> = {};
     for (const row of rows) {
       const name = row.category?.trim() || "Misc";
       counts[name] = (counts[name] || 0) + 1;
     }
 
-    // 2️⃣ build your Category objects in the order they first appeared
     const seen = new Set<string>();
     categoriesCache = rows
       .map(r => r.category?.trim() || "Misc")
@@ -92,11 +88,11 @@ export const getCategories = async (): Promise<Category[]> => {
       .map(name => {
         const slug = slugify(name);
         return {
-          id: slug,        // you could also use a UUID here
+          id: slug,      
           name,
           slug,
           count: counts[name],
-          icon: "",        // fill in your icon logic later
+          icon: "",        
         };
       });
   }
@@ -131,4 +127,19 @@ export async function fetchRelatedVideos(
   return rows.filter(
     (r) => slugify(r.category.trim()) === categorySlug && r.video_id !== currentId
   );
+}
+
+export async function searchVideos(query: string): Promise<RowData[]> {
+  const rows = await getRows();
+  const searchQuery = query.toLowerCase().trim();
+  
+  if (!searchQuery) return [];
+  
+  return rows.filter(row => {
+    const title = (row.title || '').toLowerCase();
+    const category = (row.category || '').toLowerCase();
+    
+    return title.includes(searchQuery) || 
+           category.includes(searchQuery);
+  });
 }

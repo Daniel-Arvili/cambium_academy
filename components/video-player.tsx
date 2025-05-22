@@ -1,9 +1,7 @@
 "use client"
 
 import { useRef, useEffect, useState } from "react"
-import { Play } from "lucide-react"  // you can still import these if you want a “click to play” overlay
-import { cn } from "@/lib/utils"
-
+import { Play } from "lucide-react"
 export default function VideoPlayer({
   videoId,
 }: {
@@ -12,7 +10,6 @@ export default function VideoPlayer({
   const [showPlayOverlay, setShowPlayOverlay] = useState(true)
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  // optional: remove overlay once iframe has loaded
   useEffect(() => {
     const iframe = iframeRef.current
     if (!iframe) return
@@ -27,8 +24,6 @@ export default function VideoPlayer({
     <div
       className="relative aspect-video bg-black rounded-lg overflow-hidden"
       onClick={() => {
-        // if you want clicking the overlay to start playback, you could postMessage here,
-        // or simply hide the overlay so the user can click the native play button.
         setShowPlayOverlay(false)
       }}
     >

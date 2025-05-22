@@ -1,4 +1,3 @@
-import { Suspense } from "react"
 
 export const metadata = {
   title: "All Videos - Cambium Academy",

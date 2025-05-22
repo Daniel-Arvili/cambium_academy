@@ -10,14 +10,14 @@ export function formatDate(dateString: string) {
   let date: Date;
 
   if (parts.length === 3) {
-    let [day, month, year] = parts.map((p) => parseInt(p, 10));
+    const day   = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    let   year  = parseInt(parts[2], 10);
 
-    // If someone passed "24", interpret as 2024, not 1924:
     if (year >= 0 && year < 100) {
       year += 2000;
     }
 
-    // monthIndex is zero-based
     date = new Date(year, month - 1, day);
   } else {
     date = new Date(dateString);
@@ -28,10 +28,8 @@ export function formatDate(dateString: string) {
   }
 
   return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
+    year:  "numeric",
     month: "short",
-    day: "numeric",
+    day:   "numeric",
   }).format(date);
 }
-
-

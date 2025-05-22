@@ -1,3 +1,4 @@
+// app/categories/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import {
   fetchCategoryBySlug,
@@ -10,16 +11,19 @@ export default async function CategoryPage({
   params,
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { page?: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const category = await fetchCategoryBySlug(params.slug);
+  const { slug } = await params;
+  const { page } = await searchParams;
+
+  const category = await fetchCategoryBySlug(slug);
   if (!category) notFound();
 
   const allVideos = await fetchVideosByCategory(category.slug);
 
   const pageSize = 6;
-  const currentPage = parseInt(searchParams.page || '1', 10);
+  const currentPage = parseInt(page || '1', 10);
   const start = (currentPage - 1) * pageSize;
   const videos = allVideos.slice(start, start + pageSize);
 

@@ -1,31 +1,43 @@
-import { notFound } from "next/navigation"
-import { Calendar, User, FileText, Hash } from "lucide-react"
-import { fetchVideoById, fetchRelatedVideos, slugify } from "@/services/google_sheet"
-import VideoPlayer from "@/components/video-player"
-import RelatedVideos from "@/components/related-videos"
-import { formatDate } from "@/lib/utils"
+// app/videos/[id]/page.tsx
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const video = await fetchVideoById(params.id)
+import { notFound } from "next/navigation";
+import { Calendar, User, FileText, Hash } from "lucide-react";
+import {
+  fetchVideoById,
+  fetchRelatedVideos,
+  slugify,
+} from "@/services/google_sheet";
+import VideoPlayer from "@/components/video-player";
+import RelatedVideos from "@/components/related-videos";
+import { formatDate } from "@/lib/utils";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const video = await fetchVideoById(id);
   if (!video) {
-    return {
-      title: "Video Not Found - Cambium Academy",
-    }
+    return { title: "Video Not Found - Cambium Academy" };
   }
-
   return {
     title: `${video.title} - Cambium Academy`,
     description: video.description,
-  }
+  };
 }
 
-export default async function VideoPage({ params }: { params: { id: string } }) {
-  const video = await fetchVideoById(params.id)
-  if (!video) notFound()
+export default async function VideoPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const video = await fetchVideoById(id);
+  if (!video) notFound();
 
-  const categorySlug = slugify(video.category.trim())
-  const relatedVideos = await fetchRelatedVideos(categorySlug, video.video_id)
+  const categorySlug = slugify(video.category.trim());
+  const relatedVideos = await fetchRelatedVideos(categorySlug, video.video_id);
 
   return (
     <main className="container mx-auto max-w-6xl px-0 py-8">
@@ -53,11 +65,11 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
 
             {video.hashtags && (
               <div className="mt-4 flex flex-wrap gap-2 items-center">
-                <Hash className="h-5 w-5 text-indigo-500" />
+                <Hash className="h-5 w-5 text-indigo-500 dark:text-[#ff6900]" />
                 {video.hashtags.split(' ').map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300 text-sm rounded-full"
+                    className="px-3 py-1 bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-[#ff6900] text-sm rounded-full"
                   >
                     {tag}
                   </span>
@@ -104,5 +116,5 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
         </aside>
       </div>
     </main>
-  )
+  );
 }
