@@ -1,7 +1,8 @@
-// app/search/page.tsx
+import { Suspense } from 'react';
 import { searchVideos } from '@/services/google_sheet';
 import VideoGrid from '@/components/video-grid';
 import { Pagination } from '@/components/pagination';
+import Loading from './loading';
 
 export async function generateMetadata({
   searchParams,
@@ -31,7 +32,7 @@ export default async function SearchPage({
   const start = (currentPage - 1) * pageSize;
   const videos = allVideos.slice(start, start + pageSize);
 
-  const basePath = `/search?q=${encodeURIComponent(query)}`;
+  const basePath = '/search';
 
   return (
     <main className="container mx-auto max-w-6xl px-4 py-8">
@@ -47,21 +48,24 @@ export default async function SearchPage({
         )}
       </header>
 
-      {query ? (
-        <>
-          <VideoGrid videos={videos} />
-          <Pagination
-            total={allVideos.length}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            basePath={basePath}
-          />
-        </>
-      ) : (
-        <div className="text-center text-gray-600">
-          There are no relevant videos for your search.
-        </div>
-      )}
+      <Suspense fallback={<Loading />}>
+        {query ? (
+          <>
+            <VideoGrid videos={videos} />
+            <Pagination
+              total={allVideos.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              basePath={basePath}
+              extraQuery={{ q: query }}
+            />
+          </>
+        ) : (
+          <div className="text-center text-gray-600">
+            There are no relevant videos for your search.
+          </div>
+        )}
+      </Suspense>
     </main>
   );
 }

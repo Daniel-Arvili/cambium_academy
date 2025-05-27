@@ -1,4 +1,4 @@
-// app/categories/[slug]/page.tsx
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import {
   fetchCategoryBySlug,
@@ -6,6 +6,7 @@ import {
 } from '@/services/google_sheet';
 import VideoGrid from '@/components/video-grid';
 import { Pagination } from '@/components/pagination';
+import Loading from '../loading';
 
 export default async function CategoryPage({
   params,
@@ -35,14 +36,15 @@ export default async function CategoryPage({
         <h1 className="text-3xl font-bold text-center">{category.name}</h1>
       </header>
 
-      <VideoGrid videos={videos} />
-
-      <Pagination
-        total={allVideos.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        basePath={basePath}
-      />
+      <Suspense fallback={<Loading />}>
+        <VideoGrid videos={videos} />
+        <Pagination
+          total={allVideos.length}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          basePath={basePath}
+        />
+      </Suspense>
     </main>
   );
 }

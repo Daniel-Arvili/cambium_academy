@@ -70,11 +70,13 @@ export const getCategories = async (): Promise<Category[]> => {
   if (categoriesCache.length === 0) {
     const rows = await getRows();
 
-  
     const counts: Record<string, number> = {};
     for (const row of rows) {
-      const name = row.category?.trim() || "Misc";
-      counts[name] = (counts[name] || 0) + 1;
+      // Only count if video_id exists
+      if (row.video_id) {
+        const name = row.category?.trim() || "Misc";
+        counts[name] = (counts[name] || 0) + 1;
+      }
     }
 
     const seen = new Set<string>();
@@ -91,10 +93,11 @@ export const getCategories = async (): Promise<Category[]> => {
           id: slug,      
           name,
           slug,
-          count: counts[name],
+          count: counts[name] || 0,
           icon: "",        
         };
-      });
+      })
+      .filter(category => category.count > 0); // Filter out categories with 0 count
   }
 
   return categoriesCache;
@@ -138,8 +141,10 @@ export async function searchVideos(query: string): Promise<RowData[]> {
   return rows.filter(row => {
     const title = (row.title || '').toLowerCase();
     const category = (row.category || '').toLowerCase();
+    const personName = (row.person_name || '').toLowerCase();
     
     return title.includes(searchQuery) || 
-           category.includes(searchQuery);
+           category.includes(searchQuery) ||
+           personName.includes(searchQuery);
   });
 }

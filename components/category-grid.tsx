@@ -44,15 +44,17 @@ const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   "angular": Aperture,
 }
 
-export default function CategoryGrid({ categories }: { categories: Category[] }) {
+export default function CategoryGrid({ categories, limit }: { categories: Category[], limit?: number }) {
+  const displayCategories = limit ? categories.slice(0, limit) : categories;
+  
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {categories.map((category) => {
+      {displayCategories.map((category) => {
         const key = category.slug.toLowerCase()
         const IconComponent = iconMap[key] || Lightbulb
         return (
           <Link href={`/categories/${category.slug}`} key={category.id}>
-            <Card className="h-full transition-all hover:shadow-md border-[#0a0043]/20 dark:border-[#ffebd8]/20  dark:bg-muted/40">
+            <Card className="h-full transition-all hover:shadow-md border-[#0a0043]/20 dark:border-[#ffebd8]/20 bg-gradient-to-br from-white to-[#0a0043]/5 dark:from-muted/40 dark:to-[#ffebd8]/5">
               <CardContent className="p-4 flex flex-col items-center text-center">
                 <div className="bg-[#0a0043]/10 dark:bg-[#ffebd8]/10 p-3 rounded-full mb-4">
                   <IconComponent className="h-6 w-6 text-[#0a0043] dark:text-[#ffebd8]" />

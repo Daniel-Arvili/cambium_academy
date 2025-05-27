@@ -1,7 +1,7 @@
 "use client"
 import { useState, useMemo } from "react";
 import Link from 'next/link'
-import { Search, Link as LinkIcon} from "lucide-react";
+import { Search, Link as LinkIcon, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CategoryGrid from "@/components/category-grid";
@@ -15,13 +15,19 @@ type MainPageProps = {
   featuredVideos: RowData[];
 };
 
+type Suggestions = {
+  words: string[];
+  persons: string[];
+};
+
 export default function MainPage({ data, categories, featuredVideos }: MainPageProps) {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const suggestions = useMemo(() => {
-    if (!searchQuery) return [];
+  const suggestions = useMemo<Suggestions>(() => {
+    if (!searchQuery) return { words: [], persons: [] };
     const lowerQuery = searchQuery.toLowerCase();
     const wordsSet = new Set<string>();
+    const personSet = new Set<string>();
 
     data.forEach(video => {
       video.title.split(/\W+/).forEach(word => {
@@ -31,11 +37,23 @@ export default function MainPage({ data, categories, featuredVideos }: MainPageP
       video.hashtags.split(/\s*,\s*/).forEach(tag => {
         if (tag) wordsSet.add(tag);
       });
+      if (video.person_name) {
+        personSet.add(video.person_name);
+      }
     });
 
-    return Array.from(wordsSet)
+    const wordSuggestions = Array.from(wordsSet)
       .filter(word => word.toLowerCase().startsWith(lowerQuery))
-      .slice(0, 4);
+      .slice(0, 3);
+
+    const personSuggestions = Array.from(personSet)
+      .filter(name => name.toLowerCase().startsWith(lowerQuery))
+      .slice(0, 2);
+
+    return {
+      words: wordSuggestions,
+      persons: personSuggestions
+    };
   }, [searchQuery, data]);
 
   return (
@@ -141,19 +159,29 @@ export default function MainPage({ data, categories, featuredVideos }: MainPageP
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                 />
-                <Button type="submit" variant="secondary" size="icon" className="bg-[#FFEBD8] dark:bg-[#0A0043] text-[#0A0043] dark:text-[#FFEBD8]">
+                <Button type="submit" variant="secondary" size="icon" className="bg-[#FFEBD8] dark:bg-[#0A0043] text-[#0A0043] dark:text-[#FFEBD8]" >
                   <Search className="h-5 w-5 text-[#0A0043] dark:text-[#FFEBD8]" />
                 </Button>
               </div>
 
-              {suggestions.length > 0 && (
+              {suggestions.words.length > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-1/2 bg-[#FFEBD8] dark:bg-[#0A0043] rounded-lg shadow-lg z-10">
                   <div className="flex items-center justify-between px-3 py-1">
                     <span className="text-sm font-medium text-[#0A0043] dark:text-[#FFEBD8]">Suggestions</span>
                     <LinkIcon className="h-4 w-4 text-[#0A0043] dark:text-[#FFEBD8]" />
                   </div>
                   <div className="flex flex-wrap gap-2 p-2">
-                    {suggestions.map(s => (
+                    {suggestions.persons.map(name => (
+                      <Link
+                        key={`person-${name}`}
+                        href={`/search?q=${encodeURIComponent(name)}`}
+                        className="px-3 py-1 bg-white dark:bg-gray-800 text-[#0A0043] dark:text-[#FFEBD8] rounded-full text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-1"
+                      >
+                        <User className="h-3 w-3" />
+                        {name}
+                      </Link>
+                    ))}
+                    {suggestions.words.map(s => (
                       <Link
                         key={s}
                         href={`/search?q=${encodeURIComponent(s)}`}
@@ -178,7 +206,7 @@ export default function MainPage({ data, categories, featuredVideos }: MainPageP
                   View all
             </Link>
           </div>
-          <CategoryGrid categories={categories} />
+          <CategoryGrid categories={categories} limit={12} />
         </section>
         <section className="mb-12">
           <div className="flex justify-between items-center mb-6">

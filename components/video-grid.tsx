@@ -31,7 +31,7 @@ export default function VideoGrid({ videos }: VideoGridProps) {
             className="p-0 flex flex-col h-full overflow-hidden 
               border-2 border-[#0A0043] dark:border-[#FFEBD8] 
               rounded-lg shadow hover:shadow-lg transition-transform transform hover:-translate-y-1
-              bg-white dark:bg-[#0A0043]"
+              bg-gradient-to-br from-white to-[#0A0043]/10 dark:from-muted/40 dark:to-[#ffebd8]/10"
           >
             {video.image ? (
               <div className="aspect-video relative overflow-hidden rounded-t-lg">

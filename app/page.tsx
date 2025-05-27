@@ -1,7 +1,9 @@
 // app/page.tsx
+import { Suspense } from "react";
 import MainPage from "./(main)/main-page";
 import { getCategories, getRows } from "@/services/google_sheet";
 import { Category, RowData } from "@/lib/data";
+import Loading from "./loading";
 
 export default async function Home() {
   const rows: RowData[] = await getRows();
@@ -20,10 +22,12 @@ export default async function Home() {
 
   const featuredVideos = latestSixRaw;
   return (
-    <MainPage
-      data={rows}
-      categories={categories}
-      featuredVideos={featuredVideos}
-    />
+    <Suspense fallback={<Loading />}>
+      <MainPage
+        data={rows}
+        categories={categories}
+        featuredVideos={featuredVideos}
+      />
+    </Suspense>
   );
 }
