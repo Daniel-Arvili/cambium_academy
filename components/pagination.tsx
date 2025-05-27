@@ -8,7 +8,8 @@ interface PaginationProps {
   total: number;        
   pageSize: number;     
   currentPage: number; 
-  basePath: string;      extraQuery?: Record<string, string>;
+  basePath: string;     
+  extraQuery?: Record<string, string>;
 }
 
 export function Pagination({
@@ -39,7 +40,9 @@ export function Pagination({
 
   return (
     <nav className="flex items-center justify-center space-x-2 mt-8">
-      <Button size="sm" disabled={currentPage <= 1} asChild>
+      <Button size="sm" disabled={currentPage <= 1} 
+      className='bg-[#0A0043] hover:bg-[#0A0043]/90 text-white dark:bg-[#FFEBD8] dark:text-[#0A0043] dark:hover:bg-[#FFEBD8]/90'
+       asChild>
         <Link href={buildHref(currentPage - 1)}>
           <ChevronLeft className="inline h-4 w-4 align-text-bottom mr-1" />
           Previous
@@ -53,7 +56,7 @@ export function Pagination({
           variant={p === currentPage ? 'default' : 'ghost'}
           className={
             p === currentPage
-              ? 'bg-white text-[#0A0043] border border-[#0A0043] dark:bg-[#0A0043] dark:text-[#FFEBD8] dark:border-[#FFEBD8]'
+              ? 'bg-[#FFEBD8] text-[#0A0043] border border-[#0A0043] dark:bg-[#0A0043] dark:text-[#FFEBD8] dark:border-[#FFEBD8]'
               : 'text-[#0A0043] hover:bg-[#0A0043]/10 dark:text-[#FFEBD8] dark:hover:bg-[#FFEBD8]/10'
           }
           asChild
@@ -66,7 +69,7 @@ export function Pagination({
         <span className="px-2 text-[#0A0043] dark:text-[#FFEBD8] select-none">…</span>
       )}
 
-      <Button size="sm" disabled={currentPage >= totalPages} asChild>
+      <Button size="sm" disabled={currentPage >= totalPages} className="bg-[#0A0043] hover:bg-[#0A0043]/90 text-white dark:bg-[#FFEBD8] dark:text-[#0A0043] dark:hover:bg-[#FFEBD8]/90" asChild>
         <Link href={buildHref(currentPage + 1)}>
           Next
           <ChevronRight className="inline h-4 w-4 align-text-bottom ml-1" />
