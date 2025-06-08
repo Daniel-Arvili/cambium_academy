@@ -1,8 +1,6 @@
-// app/videos/[id]/page.tsx
-
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { Calendar, User, FileText, Hash } from "lucide-react";
+import { Calendar, User, FileText, Hash, Video } from "lucide-react";
 import {
   fetchVideoById,
   fetchRelatedVideos,
@@ -39,14 +37,22 @@ export default async function VideoPage({
   if (!video) notFound();
 
   const categorySlug = slugify(video.category.trim());
-  const relatedVideos = await fetchRelatedVideos(categorySlug, video.video_id);
+  const relatedVideos = await fetchRelatedVideos(categorySlug, video.id);
 
   return (
     <main className="container mx-auto max-w-6xl px-0 py-8">
       <Suspense fallback={<Loading />}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <VideoPlayer videoId={video.video_id} />
+            {video.video_id ? (
+              <VideoPlayer videoId={video.video_id} />
+            ) : (
+              <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col items-center justify-center p-8 text-center">
+                <Video className="h-16 w-16 text-gray-400 dark:text-gray-600 mb-4" />
+                <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Video Not Available</h2>
+                <p className="text-gray-500 dark:text-gray-400">This content is currently not available in video format.</p>
+              </div>
+            )}
 
             <div>
               <h1 className="text-3xl font-extrabold mb-2">{video.title}</h1>

@@ -8,10 +8,10 @@ import type { RowData } from '@/lib/data';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function RelatedVideos({ videos }: { videos: RowData[] }) {
-  const validVideos = videos.filter(
-    (video) => video.video_id && video.video_id.trim() !== ""
+  const filteredVideos = videos.filter(
+    (video) => video.id && video.id.trim() !== ""
   );
-  if (validVideos.length === 0) {
+  if (filteredVideos.length === 0) {
     return (
       <div className="text-center py-4">
         <p className="text-gray-500 dark:text-gray-400">No related videos found</p>
@@ -22,14 +22,14 @@ export default function RelatedVideos({ videos }: { videos: RowData[] }) {
   return (
     <ScrollArea className="h-[600px] w-[400px] rounded-md border">
       <div className="p-4 space-y-4">
-        {validVideos.map((video) => (
+        {filteredVideos.map((video) => (
           <Link
-            href={`/videos/${video.video_id}`}
-            key={video.video_id}
+            href={`/videos/${video.id}`}
+            key={video.id}
             className="flex gap-3 group"
           >
             <div className="relative w-24 h-16 flex-shrink-0 overflow-hidden rounded-md bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-              {video.image ? (
+              {video.image && !video.image.includes('drive.google.com') ? (
                 <Image
                   src={video.image}
                   alt={video.title}
@@ -38,7 +38,7 @@ export default function RelatedVideos({ videos }: { videos: RowData[] }) {
                   sizes="96px"
                 />
               ) : (
-                <span className="text-xs text-gray-500 dark:text-gray-400">No Image</span>
+                <span className="text-xs text-[#0A0043]/70 dark:text-[#FFEBD8]/70 text-center">No Image Available</span>
               )}
             </div>
 

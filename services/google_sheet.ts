@@ -22,7 +22,6 @@ export const rowToObject = (
   };
 
 let rows: RowData[] = [];
-let categories: string[] = [];
 export const getRows = async (): Promise<RowData[]> => {
   if (rows.length === 0) {
     try {
@@ -72,8 +71,8 @@ export const getCategories = async (): Promise<Category[]> => {
 
     const counts: Record<string, number> = {};
     for (const row of rows) {
-      // Only count if video_id exists
-      if (row.video_id) {
+      // Only count if id exists
+      if (row.id) {
         const name = row.category?.trim() || "Misc";
         counts[name] = (counts[name] || 0) + 1;
       }
@@ -116,11 +115,21 @@ export async function fetchCategoryBySlug(slug: string): Promise<Category | unde
 
 export async function fetchVideosByCategory(categorySlug: string): Promise<RowData[]> {
   const rows = await getRows();
-  return rows.filter(r => slugify(r.category?.trim() || "") === categorySlug);
+  const filteredVideos = rows.filter(r => slugify(r.category?.trim() || "") === categorySlug);
+  
+  return filteredVideos.sort((a, b) => {
+    const [dayA, monthA, yearA] = a.date.split('/');
+    const [dayB, monthB, yearB] = b.date.split('/');
+    
+    const dateA = new Date(`20${yearA}-${monthA}-${dayA}`).getTime();
+    const dateB = new Date(`20${yearB}-${monthB}-${dayB}`).getTime();
+    
+    return dateB - dateA;
+  });
 }
 export async function fetchVideoById(id: string): Promise<RowData | undefined> {
   const rows = await getRows();
-  return rows.find(r => r.video_id === id);
+  return rows.find(r => r.id === id);
 }
 export async function fetchRelatedVideos(
   categorySlug: string,
@@ -128,7 +137,7 @@ export async function fetchRelatedVideos(
 ): Promise<RowData[]> {
   const rows = await getRows();
   return rows.filter(
-    (r) => slugify(r.category.trim()) === categorySlug && r.video_id !== currentId
+    (r) => slugify(r.category.trim()) === categorySlug && r.id !== currentId
   );
 }
 

@@ -10,7 +10,7 @@ import type { RowData } from "@/lib/data";
 type VideoGridProps = { videos: RowData[] };
 export default function VideoGrid({ videos }: VideoGridProps) {
   const validVideos = videos.filter(
-    (video) => video.video_id && video.video_id.trim() !== ""
+    (video) => video.id && video.id.trim() !== ""
   );
 
   if (validVideos.length === 0) {
@@ -26,14 +26,14 @@ export default function VideoGrid({ videos }: VideoGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {validVideos.map((video) => (
-        <Link href={`/videos/${video.video_id}`} key={video.video_id}>
+        <Link href={`/videos/${video.id}`} key={video.id}>
           <Card
             className="p-0 flex flex-col h-full overflow-hidden 
               border-2 border-[#0A0043] dark:border-[#FFEBD8] 
               rounded-lg shadow hover:shadow-lg transition-transform transform hover:-translate-y-1
               bg-gradient-to-br from-white to-[#0A0043]/10 dark:from-muted/40 dark:to-[#ffebd8]/10"
           >
-            {video.image ? (
+            {video.image && !video.image.includes('drive.google.com') ? (
               <div className="aspect-video relative overflow-hidden rounded-t-lg">
                 <Image
                   src={video.image}

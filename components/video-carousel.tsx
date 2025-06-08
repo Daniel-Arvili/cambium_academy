@@ -15,8 +15,8 @@ import type { RowData } from "@/lib/data";
 type VideoCarouselProps = { videos: RowData[] };
 
 export function VideoCarousel({ videos }: VideoCarouselProps) {
-  const validVideos = videos.filter(
-    (video) => video.video_id && video.video_id.trim() !== ""
+  const filteredVideos = videos.filter(
+    (video) => video.id && video.id.trim() !== ""
   );
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
@@ -31,13 +31,13 @@ export function VideoCarousel({ videos }: VideoCarouselProps) {
     <div className="relative">
       <Carousel opts={{ align: "start", loop: true }}>
         <CarouselContent className="-ml-4 flex gap-4">
-          {validVideos.map((video) => (
+          {filteredVideos.map((video) => (
             <CarouselItem
-              key={video.video_id}
+              key={video.id}
               className="pl-4 basis-1/4 group"
             >
               <Link
-                href={`/videos/${video.video_id}`} key={video.video_id}
+                href={`/videos/${video.id}`} key={video.id}
                 className="block text-left"
               >
                 <div className="overflow-hidden rounded-lg shadow-lg group-hover:shadow-xl transition-shadow duration-300">

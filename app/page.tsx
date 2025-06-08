@@ -1,4 +1,3 @@
-// app/page.tsx
 import { Suspense } from "react";
 import MainPage from "./(main)/main-page";
 import { getCategories, getRows } from "@/services/google_sheet";
