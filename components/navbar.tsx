@@ -24,7 +24,6 @@ export default function Navbar({ categories }: { categories: Category[] }) {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-console.log(categories)
   return (
     <header className="border-b bg-[#FFEBD8] dark:bg-[#0a0043] sticky top-0 z-40">
       <div className="flex h-16 items-center justify-between px-4">
