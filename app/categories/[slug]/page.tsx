@@ -18,17 +18,18 @@ export default async function CategoryPage({
   const { slug } = await params;
   const { page } = await searchParams;
 
-  const category = await fetchCategoryBySlug(slug);
+  const decodedName = decodeURIComponent(slug);
+  const category = await fetchCategoryBySlug(decodedName);
   if (!category) notFound();
 
-  const allVideos = await fetchVideosByCategory(category.slug);
+  const allVideos = await fetchVideosByCategory(slug);
 
   const pageSize = 6;
   const currentPage = parseInt(page || '1', 10);
   const start = (currentPage - 1) * pageSize;
   const videos = allVideos.slice(start, start + pageSize);
 
-  const basePath = `/categories/${category.slug}`;
+  const basePath = `/categories/${encodeURIComponent(category.name)}`;
 
   return (
     <main className="container mx-auto max-w-6xl px-4 py-8">

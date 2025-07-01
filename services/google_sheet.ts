@@ -1,5 +1,6 @@
 import { RowData } from "@/lib/data";
 import { Category } from "@/lib/data";
+import { slugify } from "@/lib/utils";
 
 const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
 const API_KEY = process.env.GOOGLE_SHEETS_API_KEY;
@@ -45,7 +46,6 @@ export const getRows = async (): Promise<RowData[]> => {
         rowToObject(dataRow, headerRow),
       );
 
-      //rows.sort((a, b) => compareDates(a.date, b.date));
     } catch (e) {
       console.error('Error fetching data:', e);
       return [];
@@ -57,46 +57,36 @@ export const getRows = async (): Promise<RowData[]> => {
 
 let categoriesCache: Category[] = [];
 
-export function slugify(str: string) {
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/[\s\W]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 export const getCategories = async (): Promise<Category[]> => {
   if (categoriesCache.length === 0) {
     const rows = await getRows();
 
     const counts: Record<string, number> = {};
     for (const row of rows) {
-      // Only count if id exists
       if (row.id) {
         const name = row.category?.trim() || "Misc";
-        counts[name] = (counts[name] || 0) + 1;
+        const norm = slugify(name);
+        counts[norm] = (counts[norm] || 0) + 1;
       }
     }
 
     const seen = new Set<string>();
     categoriesCache = rows
       .map(r => r.category?.trim() || "Misc")
-      .filter(name => {
-        if (seen.has(name)) return false;
-        seen.add(name);
+      .map(name => {
+        const norm = slugify(name);
+        return { name, norm };
+      })
+      .filter(({ norm }) => {
+        if (seen.has(norm)) return false;
+        seen.add(norm);
         return true;
       })
-      .map(name => {
-        const slug = slugify(name);
-        return {
-          id: slug,      
-          name,
-          slug,
-          count: counts[name] || 0,
-          icon: "",        
-        };
-      })
-      .filter(category => category.count > 0); // Filter out categories with 0 count
+      .map(({ name, norm }) => ({
+        name,
+        count: counts[norm] || 0,
+      }))
+      .filter(category => category.count > 0);
   }
 
   return categoriesCache;
@@ -107,23 +97,22 @@ export const getCategoryNames = async (): Promise<string[]> => {
   return cats.map(c => c.name);
 };
 
-
 export async function fetchCategoryBySlug(slug: string): Promise<Category | undefined> {
   const cats = await getCategories();
-  return cats.find(c => c.slug === slug);
+  const decoded = decodeURIComponent(slug);
+  const norm = slugify(decoded);
+  return cats.find(c => slugify(c.name) === norm);
 }
 
 export async function fetchVideosByCategory(categorySlug: string): Promise<RowData[]> {
   const rows = await getRows();
-  const filteredVideos = rows.filter(r => slugify(r.category?.trim() || "") === categorySlug);
-  
+  const norm = slugify(decodeURIComponent(categorySlug));
+  const filteredVideos = rows.filter(r => slugify(r.category?.trim() || "") === norm);
   return filteredVideos.sort((a, b) => {
     const [dayA, monthA, yearA] = a.date.split('/');
     const [dayB, monthB, yearB] = b.date.split('/');
-    
     const dateA = new Date(`20${yearA}-${monthA}-${dayA}`).getTime();
     const dateB = new Date(`20${yearB}-${monthB}-${dayB}`).getTime();
-    
     return dateB - dateA;
   });
 }
@@ -136,8 +125,9 @@ export async function fetchRelatedVideos(
   currentId: string
 ): Promise<RowData[]> {
   const rows = await getRows();
+  const norm = slugify(decodeURIComponent(categorySlug));
   return rows.filter(
-    (r) => slugify(r.category.trim()) === categorySlug && r.id !== currentId
+    (r) => slugify(r.category.trim()) === norm && r.id !== currentId
   );
 }
 

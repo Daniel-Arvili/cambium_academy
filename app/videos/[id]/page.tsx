@@ -4,7 +4,6 @@ import { Calendar, User, FileText, Hash, Video } from "lucide-react";
 import {
   fetchVideoById,
   fetchRelatedVideos,
-  slugify,
 } from "@/services/google_sheet";
 import VideoPlayer from "@/components/video-player";
 import RelatedVideos from "@/components/related-videos";
@@ -36,7 +35,7 @@ export default async function VideoPage({
   const video = await fetchVideoById(id);
   if (!video) notFound();
 
-  const categorySlug = slugify(video.category.trim());
+  const categorySlug = encodeURIComponent(video.category.trim());
   const relatedVideos = await fetchRelatedVideos(categorySlug, video.id);
 
   return (

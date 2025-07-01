@@ -1,10 +1,7 @@
 export type Category = {
-  id: string
-  name: string
-  slug: string
-  count: number
-  icon: string
-}
+  name: string;
+  count: number;
+};
 export type Video = {
   id: string;
   date: string;

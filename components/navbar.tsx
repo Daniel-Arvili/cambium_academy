@@ -17,13 +17,14 @@ import {
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu'
 import { Category } from "@/lib/data"
+import { slugify } from "@/lib/utils"
 
 export default function Navbar({ categories }: { categories: Category[] }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-
+console.log(categories)
   return (
     <header className="border-b bg-[#FFEBD8] dark:bg-[#0a0043] sticky top-0 z-40">
       <div className="flex h-16 items-center justify-between px-4">
@@ -58,12 +59,12 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                 className="dark:bg-[#0a0043] grid grid-cols-3 gap-2 p-2"
               >
                 {categories.map(category => (
-                  <DropdownMenuItem key={category.id} className="p-0">
+                  <DropdownMenuItem key={category.name} className="p-0">
                     <Link
-                      href={`/categories/${category.slug}`}
+                      href={`/categories/${encodeURIComponent(category.name)}`}
                       className={cn(
                         "block w-full px-3 py-2 text-sm rounded",
-                        pathname === `/categories/${category.slug}`
+                        pathname === `/categories/${encodeURIComponent(category.name)}`
                           ? "bg-[#ff6900]/80"
                           : "hover:bg-[#FFEBD8]/30 dark:hover:bg-[#0a0043]/50",
                         "text-[#0a0043] dark:text-[#FFEBD8]"

@@ -33,3 +33,12 @@ export function formatDate(dateString: string) {
     day:   "numeric",
   }).format(date);
 }
+
+// Unicode-safe slugify: keeps Hebrew/Unicode, replaces spaces/symbols with dashes, trims, lowercases
+export function slugify(str: string) {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[\s%\u2000-\u206F\u2E00-\u2E7F\'"!@#$^&*()_+={}|:;,.<>?`~\[\]\\/]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
