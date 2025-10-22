@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cambium Academy
 
-## Getting Started
+A modern, responsive educational platform built with Next.js that serves as a knowledge hub for educational content. Cambium Academy provides an intuitive interface for discovering, searching, and learning from a curated video library organized by categories.
 
-First, run the development server:
+## 🎯 Project Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Cambium Academy is a comprehensive educational platform that aggregates and organizes educational video content. The platform features a clean, modern design with powerful search capabilities, category-based organization, and a responsive interface that works seamlessly across all devices.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **📚 Educational Content Hub**: Centralized repository for educational videos and resources
+- **🔍 Advanced Search**: Intelligent search with suggestions and filtering capabilities
+- **📂 Category Organization**: Content organized by categories for easy navigation
+- **📱 Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **🎨 Modern UI/UX**: Clean, accessible interface with dark/light theme support
+- **⚡ Performance Optimized**: Built with Next.js 15 and modern web technologies
+- **📊 Data Integration**: Seamless integration with Google Sheets for content management
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Technology Stack
 
-## Learn More
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS with custom design system
+- **UI Components**: Radix UI primitives
+- **Animations**: Framer Motion
+- **Data Source**: Google Sheets API
+- **Icons**: Lucide React
+- **Theme**: Next Themes with dark/light mode support
 
-To learn more about Next.js, take a look at the following resources:
+## 📸 Screenshots
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Homepage Overview
+![Cambium Academy Homepage](./public/example1.jpg)
+*The main landing page featuring the hero section with search functionality and featured content*
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Category Navigation
+![Category Navigation](./public/example2.jpg)
+*Browse educational content by categories with an intuitive grid layout*
 
-## Deploy on Vercel
+### Video Content
+![Video Content Display](./public/example3.jpg)
+*Detailed video pages with related content and comprehensive information*
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+- Google Sheets API key (for content management)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd cambium_academy
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env.local` file in the root directory:
+   ```env
+   GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
+   GOOGLE_SHEETS_API_KEY=your_api_key
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+

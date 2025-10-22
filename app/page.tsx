@@ -18,8 +18,8 @@ export default async function Home() {
       return dateB.getTime() - dateA.getTime();
     })
     .slice(0, 6);
-
   const featuredVideos = latestSixRaw;
+  console.log(featuredVideos)
   return (
     <Suspense fallback={<Loading />}>
       <MainPage
