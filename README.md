@@ -15,6 +15,8 @@ Cambium Academy is a comprehensive educational platform that aggregates and orga
 - **🎨 Modern UI/UX**: Clean, accessible interface with dark/light theme support
 - **⚡ Performance Optimized**: Built with Next.js 15 and modern web technologies
 - **📊 Data Integration**: Seamless integration with Google Sheets for content management
+- **🎬 Video Management**: Comprehensive video library with metadata, slides, and related content
+- **🔗 Smart Suggestions**: Real-time search suggestions based on titles, categories, and speakers
 
 ## 🚀 Technology Stack
 
@@ -26,6 +28,8 @@ Cambium Academy is a comprehensive educational platform that aggregates and orga
 - **Data Source**: Google Sheets API
 - **Icons**: Lucide React
 - **Theme**: Next Themes with dark/light mode support
+- **Carousel**: Embla Carousel React
+- **State Management**: React hooks and context
 
 ## 📸 Screenshots
 
@@ -35,7 +39,7 @@ Cambium Academy is a comprehensive educational platform that aggregates and orga
 
 ### Category Navigation
 ![Category Navigation](./public/example2.jpg)
-*Browse educational content by categories with an intuitive grid layout*
+*Category-based content organization with grid layout and filtering options*
 
 ### Video Content
 ![Video Content Display](./public/example3.jpg)
@@ -47,7 +51,8 @@ Cambium Academy is a comprehensive educational platform that aggregates and orga
 
 - Node.js 18+ 
 - npm, yarn, pnpm, or bun
-- Google Sheets API key (for content management)
+- Google Sheets API key
+- Google Sheets spreadsheet with educational content
 
 ### Installation
 
@@ -89,7 +94,15 @@ Cambium Academy is a comprehensive educational platform that aggregates and orga
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [Radix UI](https://www.radix-ui.com/)
+- Styling with [Tailwind CSS](https://tailwindcss.com/)
+- Icons from [Lucide React](https://lucide.dev/)
+- Data management with [Google Sheets API](https://developers.google.com/sheets/api)
 
